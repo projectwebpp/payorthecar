@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แอปติดตามการจ่ายค่ารถ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Prompt', sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --success-dark: #3a86ff;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --border-radius: 16px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .card-title i {
+            font-size: 1.2rem;
+        }
+        
+        /* สรุปข้อมูล */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .summary-item {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .summary-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--success-dark));
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+        
+        /* ฟอร์ม */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* ตารางประวัติ */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .history-table th {
+            background-color: var(--light);
+            padding: 15px;
+            text-align: left;
+            color: var(--gray);
+            font-weight: 600;
+            border-bottom: 2px solid var(--gray-light);
+        }
+        
+        .history-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-table tr:hover {
+            background-color: var(--light);
+        }
+        
+        .amount {
+            font-weight: 700;
+            color: var(--success-dark);
+        }
+        
+        /* ข้อความตอบกลับ */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--success-dark);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .error {
+            background-color: rgba(248, 150, 30, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(248, 150, 30, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div>
+                    <h1>ติดตามการจ่ายค่ารถ</h1>
+                    <p class="subtitle">ยอดรวม 206,000 บาท • 48 งวด • งวดละ 4,291.67 บาท</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-chart-line"></i>
+                <h2>สรุปการจ่ายปัจจุบัน</h2>
+            </div>
+            
+            <div class="summary-grid" id="summaryData">
+                <!-- ข้อมูลจะถูกอัปเดตโดย JavaScript -->
+                <div class="summary-item">
+                    <div class="summary-label">ยอดจ่ายแล้ว</div>
+                    <div class="summary-value" id="totalPaid">0.00</div>
+                    <div class="summary-label">บาท</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="summary-label">เปอร์เซ็นต์ที่จ่ายแล้ว</div>
+                    <div class="summary-value" id="paidPercent">0%</div>
+                    <div class="summary-label">จากทั้งหมด</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="summary-label">งวดที่จ่ายแล้ว</div>
+                    <div class="summary-value" id="paidInstallments">0</div>
+                    <div class="summary-label">จาก 48 งวด</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="summary-label">งวดที่เหลือ</div>
+                    <div class="summary-value" id="remainingInstallments">48</div>
+                    <div class="summary-label">งวด</div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>ความคืบหน้าการจ่าย</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-edit"></i>
+                <h2>บันทึกการจ่ายงวดใหม่</h2>
+            </div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="date"><i class="far fa-calendar-alt"></i> วันที่จ่าย</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount"><i class="fas fa-money-bill-wave"></i> ยอดเงินที่จ่าย (บาท)</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="1" max="206000" placeholder="เช่น 4291.67" required>
+                    <small style="color: var(--gray); display: block; margin-top: 5px;">แนะนำ: งวดละ 4,291.67 บาท</small>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">
+                    <i class="fas fa-save"></i> บันทึกการจ่าย
+                </button>
+            </form>
+            
+            <div id="message" class="message"></div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-history"></i>
+                <h2>ประวัติการจ่าย</h2>
+            </div>
+            
+            <div id="historyTableContainer">
+                <!-- ตารางประวัติจะถูกสร้างโดย JavaScript -->
+                <div class="empty-state" id="emptyHistory">
+                    <i class="fas fa-receipt"></i>
+                    <p>ยังไม่มีประวัติการจ่าย</p>
+                    <p>เริ่มบันทึกการจ่ายงวดแรกของคุณ!</p>
+                </div>
+                
+                <table class="history-table" id="historyTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>วันที่จ่าย</th>
+                            <th>ยอดเงิน</th>
+                            <th>หมายเลขงวด</th>
+                            <th>เวลาบันทึก</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <!-- แถวข้อมูลจะถูกเพิ่มโดย JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ตั้งค่าวันที่ปัจจุบันเป็นค่าเริ่มต้น
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            
+            // โหลดข้อมูลสรุปเมื่อเปิดแอป
+            loadSummaryData();
+            
+            // จัดการฟอร์ม
+            const form = document.getElementById('paymentForm');
+            form.addEventListener('submit', handleFormSubmit);
+        });
+        
+        // โหลดข้อมูลสรุปจาก Google Sheets
+        function loadSummaryData() {
+            // ใช้ Google Apps Script URL สำหรับ doGet
+            // อย่าลืมเปลี่ยน YOUR_SCRIPT_URL เป็น URL จริงของคุณ
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxLCR-SH-U4WYv7BFyyqzCqj85_yc45s00a5weAYM6ujpnquz3ATr7ocqnY_NZWAzmc9w/exec';
+            
+            fetch(`${scriptUrl}?action=getSummary`, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateSummaryUI(data);
+                updateHistoryTable(data.paymentHistory);
+            })
+            .catch(error => {
+                console.error('Error loading summary:', error);
+                showMessage('เกิดข้อผิดพลาดในการโหลดข้อมูล', 'error');
+            });
+        }
+        
+        // อัปเดต UI ข้อมูลสรุป
+        function updateSummaryUI(data) {
+            document.getElementById('totalPaid').textContent = 
+                parseFloat(data.totalPaid).toLocaleString('th-TH', {minimumFractionDigits: 2});
+            
+            document.getElementById('paidPercent').textContent = `${data.totalPaidPercent}%`;
+            document.getElementById('paidInstallments').textContent = data.paidInstallments;
+            document.getElementById('remainingInstallments').textContent = data.remainingInstallments;
+            
+            // อัปเดต progress bar
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            progressFill.style.width = `${data.totalPaidPercent}%`;
+            progressText.textContent = `${data.totalPaidPercent}%`;
+        }
+        
+        // อัปเดตตารางประวัติ
+        function updateHistoryTable(history) {
+            const historyBody = document.getElementById('historyBody');
+            const emptyHistory = document.getElementById('emptyHistory');
+            const historyTable = document.getElementById('historyTable');
+            
+            // เคลียร์ตารางเก่า
+            historyBody.innerHTML = '';
+            
+            if (history.length === 0) {
+                emptyHistory.style.display = 'block';
+                historyTable.style.display = 'none';
+                return;
+            }
+            
+            // ซ่อนข้อความว่างเปล่าและแสดงตาราง
+            emptyHistory.style.display = 'none';
+            historyTable.style.display = 'table';
+            
+            // เพิ่มแถวข้อมูล
+            history.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // จัดรูปแบบวันที่
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                // จัดรูปแบบเวลา
+                const timestamp = new Date(item.timestamp);
+                const formattedTime = timestamp.toLocaleTimeString('th-TH', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td class="amount">${parseFloat(item.amount).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
+                    <td>${item.installment}</td>
+                    <td>${formattedTime}</td>
+                `;
+                
+                historyBody.appendChild(row);
+            });
+        }
+        
+        // จัดการการส่งฟอร์ม
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // เปลี่ยนปุ่มเป็นสถานะกำลังโหลด
+            submitBtn.innerHTML = '<span class="spinner"></span> กำลังบันทึก...';
+            submitBtn.disabled = true;
+            
+            // รับค่าจากฟอร์ม
+            const formData = new FormData(e.target);
+            
+            // ส่งข้อมูลไปยัง Google Apps Script
+            const scriptUrl = 'YOUR_SCRIPT_URL';
+            
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(`บันทึกสำเร็จ! คุณจ่ายงวดที่ ${data.summary.paidInstallments} เป็นจำนวน ${parseFloat(data.summary.lastPayment).toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท`, 'success');
+                    
+                    // อัปเดตข้อมูลสรุป
+                    updateSummaryUI(data.summary);
+                    
+                    // โหลดประวัติใหม่
+                    loadSummaryData();
+                    
+                    // รีเซ็ตฟอร์ม
+                    e.target.reset();
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('date').value = today;
+                } else {
+                    showMessage('เกิดข้อผิดพลาดในการบันทึกข้อมูล', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
+            })
+            .finally(() => {
+                // รีเซ็ตปุ่ม
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        }
+        
+        // แสดงข้อความตอบกลับ
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // ซ่อนข้อความหลังจาก 5 วินาที
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
