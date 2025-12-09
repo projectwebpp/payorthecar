@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แอปติดตามการจ่ายค่ารถ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
     <style>
         * {
             margin: 0;
@@ -215,6 +217,11 @@
             font-size: 1.2rem;
         }
         
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray), var(--dark));
+            margin-top: 5px;
+        }
+        
         /* ตารางประวัติ */
         .history-table {
             width: 100%;
@@ -249,25 +256,50 @@
             color: var(--success-dark);
         }
         
-        /* ข้อความตอบกลับ */
-        .message {
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
+        .installment-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 20px;
             display: none;
         }
         
-        .success {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--success-dark);
-            border: 1px solid rgba(76, 201, 240, 0.3);
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--gray-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
         
-        .error {
-            background-color: rgba(248, 150, 30, 0.1);
-            color: var(--warning);
-            border: 1px solid rgba(248, 150, 30, 0.3);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
         }
         
         /* Responsive */
@@ -290,21 +322,6 @@
             }
         }
         
-        /* Loading spinner */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -316,19 +333,48 @@
             margin-bottom: 15px;
             color: var(--gray-light);
         }
+        
+        .info-box {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .info-box p {
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .info-box strong {
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">กำลังโหลดข้อมูล...</div>
+    </div>
+    
     <div class="container">
         <header>
             <div class="logo">
                 <i class="fas fa-car"></i>
                 <div>
                     <h1>ติดตามการจ่ายค่ารถ</h1>
-                    <p class="subtitle">ยอดรวม 206,000 บาท • 48 งวด • งวดละ 4,291.67 บาท</p>
+                    <p class="subtitle">ยอดรวม 201,600 บาท • 48 งวด • งวดละ 4,200 บาท</p>
                 </div>
             </div>
         </header>
+        
+        <div class="info-box">
+            <p><strong>ยอดรวมรถ:</strong> 201,600 บาท</p>
+            <p><strong>จำนวนงวด:</strong> 48 งวด</p>
+            <p><strong>ยอดต่องวด:</strong> 4,200 บาท</p>
+        </div>
         
         <div class="card">
             <div class="card-title">
@@ -337,7 +383,6 @@
             </div>
             
             <div class="summary-grid" id="summaryData">
-                <!-- ข้อมูลจะถูกอัปเดตโดย JavaScript -->
                 <div class="summary-item">
                     <div class="summary-label">ยอดจ่ายแล้ว</div>
                     <div class="summary-value" id="totalPaid">0.00</div>
@@ -388,26 +433,26 @@
                 
                 <div class="form-group">
                     <label for="amount"><i class="fas fa-money-bill-wave"></i> ยอดเงินที่จ่าย (บาท)</label>
-                    <input type="number" id="amount" name="amount" step="0.01" min="1" max="201600" placeholder="เช่น 4291.67" required>
-                    <small style="color: var(--gray); display: block; margin-top: 5px;">แนะนำ: งวดละ 4,291.67 บาท</small>
+                    <input type="number" id="amount" name="amount" step="0.01" min="1" max="201600" placeholder="เช่น 4200" required>
+                    <small style="color: var(--gray); display: block; margin-top: 5px;">แนะนำ: งวดละ 4,200 บาท (48 งวด)</small>
                 </div>
                 
                 <button type="submit" class="btn" id="submitBtn">
                     <i class="fas fa-save"></i> บันทึกการจ่าย
                 </button>
+                <button type="button" class="btn btn-secondary" id="suggestBtn">
+                    <i class="fas fa-calculator"></i> เติมยอดแนะนำ (4,200 บาท)
+                </button>
             </form>
-            
-            <div id="message" class="message"></div>
         </div>
         
         <div class="card">
             <div class="card-title">
                 <i class="fas fa-history"></i>
-                <h2>ประวัติการจ่าย</h2>
+                <h2>ประวัติการจ่ายล่าสุด</h2>
             </div>
             
             <div id="historyTableContainer">
-                <!-- ตารางประวัติจะถูกสร้างโดย JavaScript -->
                 <div class="empty-state" id="emptyHistory">
                     <i class="fas fa-receipt"></i>
                     <p>ยังไม่มีประวัติการจ่าย</p>
@@ -419,7 +464,7 @@
                         <tr>
                             <th>วันที่จ่าย</th>
                             <th>ยอดเงิน</th>
-                            <th>หมายเลขงวด</th>
+                            <th>งวดที่</th>
                             <th>เวลาบันทึก</th>
                         </tr>
                     </thead>
@@ -431,9 +476,16 @@
         </div>
     </div>
 
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    
     <script>
-        // ตั้งค่าวันที่ปัจจุบันเป็นค่าเริ่มต้น
+        // ตั้งค่า URL ของ Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLCR-SH-U4WYv7BFyyqzCqj85_yc45s00a5weAYM6ujpnquz3ATr7ocqnY_NZWAzmc9w/exec'; // เปลี่ยนเป็น URL ของคุณ
+        
+        // DOM Content Loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // ตั้งค่าวันที่ปัจจุบันเป็นค่าเริ่มต้น
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date').value = today;
             
@@ -443,33 +495,69 @@
             // จัดการฟอร์ม
             const form = document.getElementById('paymentForm');
             form.addEventListener('submit', handleFormSubmit);
+            
+            // ปุ่มแนะนำยอดเงิน
+            document.getElementById('suggestBtn').addEventListener('click', function() {
+                document.getElementById('amount').value = '4200';
+            });
         });
+        
+        // ฟังก์ชันแสดง Loading Overlay
+        function showLoading(text = 'กำลังโหลดข้อมูล...') {
+            const overlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
+            loadingText.textContent = text;
+            overlay.style.display = 'flex';
+        }
+        
+        // ฟังก์ชันซ่อน Loading Overlay
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'none';
+        }
         
         // โหลดข้อมูลสรุปจาก Google Sheets
         function loadSummaryData() {
-            // ใช้ Google Apps Script URL สำหรับ doGet
-            // อย่าลืมเปลี่ยน YOUR_SCRIPT_URL เป็น URL จริงของคุณ
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxLCR-SH-U4WYv7BFyyqzCqj85_yc45s00a5weAYM6ujpnquz3ATr7ocqnY_NZWAzmc9w/exec';
+            showLoading('กำลังโหลดข้อมูล...');
             
-            fetch(`${scriptUrl}?action=getSummary`, {
+            fetch(`${SCRIPT_URL}?action=getSummary`, {
                 method: 'GET'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
+                if (data.error) {
+                    throw new Error(data.message);
+                }
                 updateSummaryUI(data);
                 updateHistoryTable(data.paymentHistory);
+                hideLoading();
             })
             .catch(error => {
                 console.error('Error loading summary:', error);
-                showMessage('เกิดข้อผิดพลาดในการโหลดข้อมูล', 'error');
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                    confirmButtonText: 'ตกลง'
+                });
             });
         }
         
         // อัปเดต UI ข้อมูลสรุป
         function updateSummaryUI(data) {
-            document.getElementById('totalPaid').textContent = 
-                parseFloat(data.totalPaid).toLocaleString('th-TH', {minimumFractionDigits: 2});
+            // จัดรูปแบบตัวเลขไทย
+            const formatNumber = (num) => {
+                return parseFloat(num).toLocaleString('th-TH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            };
             
+            document.getElementById('totalPaid').textContent = formatNumber(data.totalPaid);
             document.getElementById('paidPercent').textContent = `${data.totalPaidPercent}%`;
             document.getElementById('paidInstallments').textContent = data.paidInstallments;
             document.getElementById('remainingInstallments').textContent = data.remainingInstallments;
@@ -479,6 +567,13 @@
             const progressText = document.getElementById('progressText');
             progressFill.style.width = `${data.totalPaidPercent}%`;
             progressText.textContent = `${data.totalPaidPercent}%`;
+            
+            // เปลี่ยนสี progress bar ตามเปอร์เซ็นต์
+            if (parseFloat(data.totalPaidPercent) >= 100) {
+                progressFill.style.background = 'linear-gradient(90deg, #4CAF50, #2E7D32)';
+            } else if (parseFloat(data.totalPaidPercent) >= 75) {
+                progressFill.style.background = 'linear-gradient(90deg, #2196F3, #0D47A1)';
+            }
         }
         
         // อัปเดตตารางประวัติ
@@ -490,7 +585,7 @@
             // เคลียร์ตารางเก่า
             historyBody.innerHTML = '';
             
-            if (history.length === 0) {
+            if (!history || history.length === 0) {
                 emptyHistory.style.display = 'block';
                 historyTable.style.display = 'none';
                 return;
@@ -500,8 +595,10 @@
             emptyHistory.style.display = 'none';
             historyTable.style.display = 'table';
             
-            // เพิ่มแถวข้อมูล
-            history.forEach(item => {
+            // เพิ่มแถวข้อมูล (จำกัดแสดง 10 รายการล่าสุด)
+            const displayHistory = history.slice(0, 10);
+            
+            displayHistory.forEach(item => {
                 const row = document.createElement('tr');
                 
                 // จัดรูปแบบวันที่
@@ -513,16 +610,19 @@
                 });
                 
                 // จัดรูปแบบเวลา
-                const timestamp = new Date(item.timestamp);
-                const formattedTime = timestamp.toLocaleTimeString('th-TH', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+                let formattedTime = '';
+                if (item.timestamp) {
+                    const timestamp = new Date(item.timestamp);
+                    formattedTime = timestamp.toLocaleTimeString('th-TH', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
                 
                 row.innerHTML = `
                     <td>${formattedDate}</td>
                     <td class="amount">${parseFloat(item.amount).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                    <td>${item.installment}</td>
+                    <td><span class="installment-badge">งวดที่ ${item.installment}</span></td>
                     <td>${formattedTime}</td>
                 `;
                 
@@ -534,64 +634,124 @@
         function handleFormSubmit(e) {
             e.preventDefault();
             
-            const submitBtn = document.getElementById('submitBtn');
-            const originalBtnText = submitBtn.innerHTML;
+            const form = e.target;
+            const date = document.getElementById('date').value;
+            const amount = parseFloat(document.getElementById('amount').value);
             
-            // เปลี่ยนปุ่มเป็นสถานะกำลังโหลด
-            submitBtn.innerHTML = '<span class="spinner"></span> กำลังบันทึก...';
+            // ตรวจสอบข้อมูล
+            if (!date) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือกวันที่',
+                    text: 'กรุณาเลือกวันที่ที่คุณจ่ายเงิน',
+                    confirmButtonText: 'ตกลง'
+                });
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกยอดเงิน',
+                    text: 'กรุณากรอกยอดเงินที่จ่ายให้ถูกต้อง',
+                    confirmButtonText: 'ตกลง'
+                });
+                return;
+            }
+            
+            // ยืนยันการบันทึก
+            Swal.fire({
+                title: 'ยืนยันการบันทึก',
+                html: `<p>คุณต้องการบันทึกการจ่ายงวดใหม่หรือไม่?</p>
+                      <p><strong>วันที่:</strong> ${date}</p>
+                      <p><strong>ยอดเงิน:</strong> ${amount.toLocaleString('th-TH')} บาท</p>`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'บันทึก',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#4361ee',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ส่งข้อมูลไปยัง Google Apps Script
+                    submitFormData(form);
+                }
+            });
+        }
+        
+        // ส่งข้อมูลฟอร์ม
+        function submitFormData(form) {
+            showLoading('กำลังบันทึกข้อมูล...');
+            
+            const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             
-            // รับค่าจากฟอร์ม
-            const formData = new FormData(e.target);
+            const formData = new FormData(form);
             
-            // ส่งข้อมูลไปยัง Google Apps Script
-            const scriptUrl = 'YOUR_SCRIPT_URL';
-            
-            fetch(scriptUrl, {
+            fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
+                hideLoading();
+                submitBtn.disabled = false;
+                
                 if (data.success) {
-                    showMessage(`บันทึกสำเร็จ! คุณจ่ายงวดที่ ${data.summary.paidInstallments} เป็นจำนวน ${parseFloat(data.summary.lastPayment).toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท`, 'success');
+                    // แสดงผลสำเร็จด้วย SweetAlert
+                    const paidInstallments = data.summary.paidInstallments;
+                    const lastPayment = parseFloat(data.summary.lastPayment).toLocaleString('th-TH', {
+                        minimumFractionDigits: 2
+                    });
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ!',
+                        html: `
+                            <div style="text-align: left; margin: 20px 0;">
+                                <p><strong>งวดที่จ่าย:</strong> ${paidInstallments}</p>
+                                <p><strong>ยอดเงิน:</strong> ${lastPayment} บาท</p>
+                                <p><strong>ยอดจ่ายสะสม:</strong> ${parseFloat(data.summary.totalPaid).toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p>
+                                <p><strong>เปอร์เซ็นต์ที่จ่ายแล้ว:</strong> ${data.summary.totalPaidPercent}%</p>
+                                <p><strong>งวดที่เหลือ:</strong> ${data.summary.remainingInstallments} งวด</p>
+                            </div>
+                        `,
+                        confirmButtonText: 'ตกลง',
+                        confirmButtonColor: '#4361ee'
+                    });
                     
                     // อัปเดตข้อมูลสรุป
                     updateSummaryUI(data.summary);
                     
-                    // โหลดประวัติใหม่
-                    loadSummaryData();
+                    // อัปเดตประวัติ
+                    if (data.paymentHistory) {
+                        updateHistoryTable(data.paymentHistory);
+                    }
                     
                     // รีเซ็ตฟอร์ม
-                    e.target.reset();
+                    form.reset();
                     const today = new Date().toISOString().split('T')[0];
                     document.getElementById('date').value = today;
+                    
                 } else {
-                    showMessage('เกิดข้อผิดพลาดในการบันทึกข้อมูล', 'error');
+                    throw new Error(data.message || 'เกิดข้อผิดพลาดในการบันทึก');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                showMessage('เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
-            })
-            .finally(() => {
-                // รีเซ็ตปุ่ม
-                submitBtn.innerHTML = originalBtnText;
+                hideLoading();
                 submitBtn.disabled = false;
+                
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: error.message || 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                    confirmButtonText: 'ตกลง'
+                });
             });
-        }
-        
-        // แสดงข้อความตอบกลับ
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}`;
-            messageDiv.style.display = 'block';
-            
-            // ซ่อนข้อความหลังจาก 5 วินาที
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
         }
     </script>
 </body>
