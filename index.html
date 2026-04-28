@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Dark Car Payment Tracker | ติดตามการจ่ายค่ารถ</title>
-    <!-- Google Fonts: Prompt (Thai + Latin) -->
+    <!-- Google Fonts: Prompt -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (icons) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SweetAlert2 CSS (dark mode friendly) -->
+    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
     
     <!-- PWA / App icons (keeping original) -->
@@ -32,11 +32,9 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* ใช้ Google Font Prompt เป็นหลัก */
             font-family: 'Prompt', 'Sarabun', system-ui, -apple-system, 'Segoe UI', sans-serif;
         }
 
-        /* DARK MODE VARIABLES — Modern & Sleek */
         :root {
             --bg-gradient-start: #0a0c12;
             --bg-gradient-end: #141824;
@@ -56,11 +54,8 @@
             --text-secondary: #9ca3cf;
             --text-muted: #6c729e;
             --border-light: rgba(66, 78, 110, 0.4);
-            --border-glow: rgba(95, 126, 242, 0.5);
             --shadow-card: 0 20px 35px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(95, 126, 242, 0.1);
-            --shadow-hover: 0 25px 40px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(95, 126, 242, 0.3);
             --btn-gradient: linear-gradient(135deg, #5f7ef2, #8b5cf6);
-            --btn-gradient-hover: linear-gradient(135deg, #7e9aff, #9f7afe);
             --input-bg: #0e1120;
             --progress-bg: #252b41;
         }
@@ -74,11 +69,10 @@
         }
 
         .container {
-            max-width: 880px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Header Glassmorphism */
         header {
             text-align: center;
             margin-bottom: 28px;
@@ -88,7 +82,6 @@
             border-radius: 32px;
             box-shadow: var(--shadow-card);
             border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
         }
 
         .logo {
@@ -96,7 +89,6 @@
             align-items: center;
             justify-content: center;
             gap: 14px;
-            margin-bottom: 6px;
             flex-wrap: wrap;
         }
 
@@ -106,7 +98,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
         }
 
         h1 {
@@ -116,21 +107,17 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
         }
 
         .subtitle {
             color: var(--text-secondary);
             font-size: 0.85rem;
-            font-weight: 500;
             background: rgba(95, 126, 242, 0.2);
             display: inline-block;
             padding: 4px 14px;
             border-radius: 40px;
-            backdrop-filter: blur(4px);
         }
 
-        /* Cards Modern */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -138,12 +125,11 @@
             box-shadow: var(--shadow-card);
             padding: 22px 24px;
             margin-bottom: 26px;
-            transition: all 0.25s ease;
             border: 1px solid var(--border-light);
+            transition: all 0.25s ease;
         }
 
         .card:hover {
-            box-shadow: var(--shadow-hover);
             transform: translateY(-2px);
             border-color: var(--primary-glow);
         }
@@ -165,11 +151,8 @@
         .card-title h2 {
             font-size: 1.4rem;
             font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.2px;
         }
 
-        /* Summary grid */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -182,14 +165,13 @@
             border-radius: 28px;
             padding: 18px 10px;
             text-align: center;
-            transition: all 0.2s;
             border: 1px solid rgba(95, 126, 242, 0.2);
+            transition: 0.2s;
         }
 
         .summary-item:hover {
             background: var(--surface-2);
             border-color: var(--primary);
-            transform: scale(1.01);
         }
 
         .summary-value {
@@ -200,7 +182,6 @@
             background-clip: text;
             color: transparent;
             margin: 10px 0 4px;
-            letter-spacing: -0.5px;
         }
 
         .summary-label {
@@ -208,10 +189,8 @@
             font-size: 0.8rem;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Progress Bar Glow */
         .progress-container {
             margin: 16px 0 6px;
         }
@@ -220,7 +199,6 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            font-weight: 500;
             color: var(--text-secondary);
             font-size: 0.85rem;
         }
@@ -230,7 +208,6 @@
             background-color: var(--progress-bg);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .progress-fill {
@@ -242,7 +219,6 @@
             box-shadow: 0 0 6px var(--primary-light);
         }
 
-        /* Form Elements */
         .form-group {
             margin-bottom: 22px;
         }
@@ -252,17 +228,14 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 10px;
-            color: var(--text-primary);
             font-weight: 500;
-            font-size: 0.9rem;
         }
 
         label i {
             color: var(--primary-light);
-            font-size: 1rem;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 14px 18px;
             background: var(--input-bg);
@@ -271,18 +244,12 @@
             font-size: 1rem;
             color: var(--text-primary);
             transition: all 0.2s;
-            font-weight: 400;
         }
 
-        input:focus, select:focus {
+        input:focus {
             border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(95, 126, 242, 0.3);
-            background: #0b0e1a;
-        }
-
-        input::placeholder {
-            color: var(--text-muted);
         }
 
         small {
@@ -306,19 +273,14 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: 0.25s;
             margin-top: 8px;
             box-shadow: 0 6px 14px rgba(95, 126, 242, 0.25);
         }
 
         .btn:hover {
-            background: var(--btn-gradient-hover);
+            background: linear-gradient(135deg, #7e9aff, #9f7afe);
             transform: translateY(-2px);
-            box-shadow: 0 12px 22px rgba(95, 126, 242, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(1px);
         }
 
         .btn-secondary {
@@ -332,20 +294,19 @@
             border-color: var(--primary);
         }
 
-        /* ----- Responsive Table (มือถือ & desktop) ----- */
+        /* Table & Pagination */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-top: 8px;
             border-radius: 24px;
-            background: transparent;
         }
 
         .history-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
-            min-width: 500px; /* ให้เลื่อนแนวนอนได้บนมือถือเล็ก */
+            min-width: 500px;
         }
 
         .history-table th {
@@ -355,18 +316,12 @@
             color: var(--text-secondary);
             font-weight: 600;
             border-bottom: 1px solid var(--border-light);
-            font-size: 0.85rem;
         }
 
         .history-table td {
             padding: 14px 12px;
             border-bottom: 1px solid rgba(66, 78, 110, 0.3);
             color: var(--text-primary);
-            font-size: 0.85rem;
-        }
-
-        .history-table tr:last-child td {
-            border-bottom: none;
         }
 
         .history-table tr:hover td {
@@ -376,7 +331,6 @@
         .amount {
             font-weight: 700;
             color: var(--success);
-            letter-spacing: -0.2px;
         }
 
         .installment-badge {
@@ -390,7 +344,6 @@
             white-space: nowrap;
         }
 
-        /* Info Box */
         .info-box {
             background: linear-gradient(135deg, rgba(46, 55, 90, 0.7), rgba(28, 32, 55, 0.8));
             border-radius: 28px;
@@ -398,21 +351,70 @@
             margin-bottom: 26px;
             border-left: 4px solid var(--primary);
             backdrop-filter: blur(8px);
-            border: 1px solid var(--border-light);
         }
 
         .info-box p {
-            margin-bottom: 6px;
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
         .info-box strong {
             color: var(--primary-light);
-            font-weight: 700;
         }
 
-        /* Loading Overlay Dark */
+        /* Pagination controls */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: var(--surface-1);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 32px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 6px var(--primary-glow);
+        }
+
+        .page-btn:hover:not(.active) {
+            background: var(--surface-2);
+            border-color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -439,11 +441,6 @@
             animation: spin 1s linear infinite;
         }
 
-        .loading-text {
-            color: var(--primary-light);
-            font-weight: 600;
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -460,69 +457,14 @@
             opacity: 0.5;
         }
 
-        /* ===== ปรับปรุงสำหรับมือถือเพิ่มเติม (Responsive Enhance) ===== */
         @media (max-width: 680px) {
-            body {
-                padding: 16px 12px;
-            }
-            .card {
-                padding: 18px 16px;
-            }
-            .summary-value {
-                font-size: 1.5rem;
-            }
-            .summary-label {
-                font-size: 0.7rem;
-            }
-            .card-title h2 {
-                font-size: 1.25rem;
-            }
-            .btn {
-                padding: 12px 16px;
-                font-size: 0.9rem;
-            }
-            .info-box p {
-                font-size: 0.8rem;
-            }
-            .history-table th, 
-            .history-table td {
-                padding: 10px 8px;
-                font-size: 0.75rem;
-            }
-            .installment-badge {
-                font-size: 0.65rem;
-                padding: 3px 8px;
-            }
-            .summary-grid {
-                gap: 12px;
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            }
-        }
-
-        /* สำหรับหน้าจอที่เล็กมาก (<=480px) ให้ table wrapper จัดการดีอยู่แล้ว */
-        @media (max-width: 480px) {
-            .history-table {
-                min-width: 460px;
-            }
-            .logo i {
-                font-size: 2rem;
-            }
-            h1 {
-                font-size: 1.4rem;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--surface-1);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
+            body { padding: 16px 12px; }
+            .card { padding: 18px 16px; }
+            .summary-value { font-size: 1.5rem; }
+            .card-title h2 { font-size: 1.25rem; }
+            .btn { padding: 12px 16px; font-size: 0.9rem; }
+            .history-table th, .history-table td { padding: 10px 8px; font-size: 0.75rem; }
+            .page-btn { padding: 6px 12px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -553,100 +495,41 @@
             <i class="fas fa-chart-simple"></i>
             <h2>แดชบอร์ดการเงิน</h2>
         </div>
-
         <div class="summary-grid" id="summaryData">
-            <div class="summary-item">
-                <div class="summary-label">ยอดจ่ายแล้ว</div>
-                <div class="summary-value" id="totalPaid">0.00</div>
-                <div class="summary-label">บาท</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">คงเหลือต้องจ่าย</div>
-                <div class="summary-value" id="remainingBalance">201,600.00</div>
-                <div class="summary-label">บาท</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">เปอร์เซ็นต์ที่จ่ายแล้ว</div>
-                <div class="summary-value" id="paidPercent">0%</div>
-                <div class="summary-label">ความคืบหน้า</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">งวดที่จ่ายแล้ว</div>
-                <div class="summary-value" id="paidInstallments">0</div>
-                <div class="summary-label">จาก 48 งวด</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">งวดที่เหลือ</div>
-                <div class="summary-value" id="remainingInstallments">48</div>
-                <div class="summary-label">งวด</div>
-            </div>
+            <div class="summary-item"><div class="summary-label">ยอดจ่ายแล้ว</div><div class="summary-value" id="totalPaid">0.00</div><div class="summary-label">บาท</div></div>
+            <div class="summary-item"><div class="summary-label">คงเหลือต้องจ่าย</div><div class="summary-value" id="remainingBalance">201,600.00</div><div class="summary-label">บาท</div></div>
+            <div class="summary-item"><div class="summary-label">เปอร์เซ็นต์ที่จ่ายแล้ว</div><div class="summary-value" id="paidPercent">0%</div><div class="summary-label">ความคืบหน้า</div></div>
+            <div class="summary-item"><div class="summary-label">งวดที่จ่ายแล้ว</div><div class="summary-value" id="paidInstallments">0</div><div class="summary-label">จาก 48 งวด</div></div>
+            <div class="summary-item"><div class="summary-label">งวดที่เหลือ</div><div class="summary-value" id="remainingInstallments">48</div><div class="summary-label">งวด</div></div>
         </div>
-
         <div class="progress-container">
-            <div class="progress-header">
-                <span><i class="fas fa-charging-station"></i> ความคืบหน้าทั้งหมด</span>
-                <span id="progressText">0%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
+            <div class="progress-header"><span><i class="fas fa-charging-station"></i> ความคืบหน้าทั้งหมด</span><span id="progressText">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-title">
-            <i class="fas fa-wallet"></i>
-            <h2>บันทึกการจ่ายงวดใหม่</h2>
-        </div>
-
+        <div class="card-title"><i class="fas fa-wallet"></i><h2>บันทึกการจ่ายงวดใหม่</h2></div>
         <form id="paymentForm">
-            <div class="form-group">
-                <label><i class="far fa-calendar-alt"></i> วันที่จ่าย</label>
-                <input type="date" id="date" name="date" required>
-            </div>
-
-            <div class="form-group">
-                <label><i class="fas fa-coins"></i> ยอดเงินที่จ่าย (บาท)</label>
-                <input type="number" id="amount" name="amount" step="0.01" min="1" max="201600" placeholder="เช่น 4200" required>
-                <small>แนะนำ: งวดละ 4,200 บาท (ครบ 48 งวด)</small>
-            </div>
-
-            <button type="submit" class="btn" id="submitBtn">
-                <i class="fas fa-cloud-upload-alt"></i> บันทึกการจ่าย
-            </button>
-            <button type="button" class="btn btn-secondary" id="suggestBtn">
-                <i class="fas fa-magic"></i> เติมยอดแนะนำ (4,200 บาท)
-            </button>
+            <div class="form-group"><label><i class="far fa-calendar-alt"></i> วันที่จ่าย</label><input type="date" id="date" required></div>
+            <div class="form-group"><label><i class="fas fa-coins"></i> ยอดเงินที่จ่าย (บาท)</label><input type="number" id="amount" step="0.01" min="1" max="201600" placeholder="เช่น 4200" required><small>แนะนำ: งวดละ 4,200 บาท (ครบ 48 งวด)</small></div>
+            <button type="submit" class="btn" id="submitBtn"><i class="fas fa-cloud-upload-alt"></i> บันทึกการจ่าย</button>
+            <button type="button" class="btn btn-secondary" id="suggestBtn"><i class="fas fa-magic"></i> เติมยอดแนะนำ (4,200 บาท)</button>
         </form>
     </div>
 
     <div class="card">
-        <div class="card-title">
-            <i class="fas fa-timeline"></i>
-            <h2>ประวัติการจ่ายล่าสุด</h2>
-        </div>
-
+        <div class="card-title"><i class="fas fa-timeline"></i><h2>ประวัติการจ่ายทั้งหมด</h2></div>
         <div id="historyTableContainer">
-            <div class="empty-state" id="emptyHistory">
-                <i class="fas fa-receipt"></i>
-                <p>ยังไม่มีประวัติการจ่าย</p>
-                <p>เริ่มบันทึกการจ่ายงวดแรกของคุณ!</p>
-            </div>
-
-            <!-- ปรับ responsive: ใส่ table wrapper เพื่อให้เลื่อนแนวนอนบนมือถือได้อย่างราบรื่น -->
+            <div class="empty-state" id="emptyHistory"><i class="fas fa-receipt"></i><p>ยังไม่มีประวัติการจ่าย</p><p>เริ่มบันทึกการจ่ายงวดแรกของคุณ!</p></div>
             <div class="table-wrapper" id="tableWrapper" style="display: none;">
                 <table class="history-table" id="historyTable">
-                    <thead>
-                        <tr>
-                            <th>วันที่จ่าย</th>
-                            <th>ยอดเงิน (บาท)</th>
-                            <th>งวดที่</th>
-                            <th>เวลาบันทึก</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>วันที่จ่าย</th><th>ยอดเงิน (บาท)</th><th>งวดที่</th><th>เวลาบันทึก</th></tr></thead>
                     <tbody id="historyBody"></tbody>
                 </table>
             </div>
+            <!-- Pagination controls -->
+            <div id="paginationControls" style="display: none;"></div>
         </div>
     </div>
 </div>
@@ -654,20 +537,21 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
 
 <script>
-    // ---------- CONFIGURATION ----------
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLCR-SH-U4WYv7BFyyqzCqj85_yc45s00a5weAYM6ujpnquz3ATr7ocqnY_NZWAzmc9w/exec';
     const TOTAL_PRICE = 201600;
     const INSTALLMENT_COUNT = 48;
+    const ROWS_PER_PAGE = 10;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
+    let fullPaymentHistory = [];     // เก็บ history ทั้งหมดจาก API
+    let currentPage = 1;
+    let totalPages = 1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
         loadSummaryData();
 
-        const form = document.getElementById('paymentForm');
-        form.addEventListener('submit', handleFormSubmit);
-
-        document.getElementById('suggestBtn').addEventListener('click', function() {
+        document.getElementById('paymentForm').addEventListener('submit', handleFormSubmit);
+        document.getElementById('suggestBtn').addEventListener('click', () => {
             document.getElementById('amount').value = '4200';
         });
     });
@@ -682,31 +566,30 @@
         document.getElementById('loadingOverlay').style.display = 'none';
     }
 
-    function loadSummaryData() {
+    async function loadSummaryData() {
         showLoading('กำลังโหลดข้อมูลการจ่าย...');
-        fetch(`${SCRIPT_URL}?action=getSummary`, { method: 'GET' })
-            .then(response => {
-                if (!response.ok) throw new Error('Network error');
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) throw new Error(data.message);
-                updateSummaryUI(data);
-                updateHistoryTable(data.paymentHistory);
-                hideLoading();
-            })
-            .catch(error => {
-                console.error('Load error:', error);
-                hideLoading();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'โหลดข้อมูลไม่สำเร็จ',
-                    text: 'กรุณาตรวจสอบการเชื่อมต่อหรือลองใหม่อีกครั้ง',
-                    background: '#13172a',
-                    color: '#f0f3fa',
-                    confirmButtonColor: '#5f7ef2'
-                });
+        try {
+            const response = await fetch(`${SCRIPT_URL}?action=getSummary`, { method: 'GET' });
+            if (!response.ok) throw new Error('Network error');
+            const data = await response.json();
+            if (data.error) throw new Error(data.message);
+            
+            // เก็บประวัติทั้งหมด (เรียงจากล่าสุด? API ให้มาอาจเรียงตามลำดับที่บันทึก เราจะแสดงล่าสุดก่อน pagination)
+            fullPaymentHistory = data.paymentHistory || [];
+            // เรียงลำดับให้ล่าสุดอยู่ด้านบน (timestamp หรือ installment สูงสุด)
+            fullPaymentHistory.sort((a, b) => {
+                // ใช้ installment เป็นหลัก (งวดมากสุด = ล่าสุด)
+                return (b.installment || 0) - (a.installment || 0);
             });
+            
+            updateSummaryUI(data);
+            setupPaginationAndRender(fullPaymentHistory);
+            hideLoading();
+        } catch (error) {
+            console.error(error);
+            hideLoading();
+            Swal.fire({ icon: 'error', title: 'โหลดข้อมูลไม่สำเร็จ', text: 'กรุณาตรวจสอบการเชื่อมต่อ', background: '#13172a', color: '#f0f3fa', confirmButtonColor: '#5f7ef2' });
+        }
     }
 
     function updateSummaryUI(data) {
@@ -715,10 +598,7 @@
         const paidPercentValue = ((totalPaid / TOTAL_PRICE) * 100).toFixed(2);
         const paidInstallmentsCount = data.paidInstallments || 0;
         const remainingInstallmentsCount = INSTALLMENT_COUNT - paidInstallmentsCount;
-
-        const formatMoney = (val) => {
-            return val.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        };
+        const formatMoney = (val) => val.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         document.getElementById('totalPaid').textContent = formatMoney(totalPaid);
         document.getElementById('remainingBalance').textContent = formatMoney(remainingBalanceValue);
@@ -730,35 +610,37 @@
         const progressText = document.getElementById('progressText');
         const percentFloat = parseFloat(paidPercentValue);
         progressFill.style.width = `${Math.min(percentFloat, 100)}%`;
-        progressText.textContent = `${percentFloat}%`;
+        progressText.textContent = `${paidPercentValue}%`;
 
-        if (percentFloat >= 100) {
-            progressFill.style.background = 'linear-gradient(90deg, #2dd4bf, #14b8a6)';
-        } else if (percentFloat >= 75) {
-            progressFill.style.background = 'linear-gradient(90deg, #5f7ef2, #8b5cf6)';
-        } else {
-            progressFill.style.background = 'linear-gradient(90deg, #5f7ef2, #a78bfa)';
-        }
+        if (percentFloat >= 100) progressFill.style.background = 'linear-gradient(90deg, #2dd4bf, #14b8a6)';
+        else if (percentFloat >= 75) progressFill.style.background = 'linear-gradient(90deg, #5f7ef2, #8b5cf6)';
+        else progressFill.style.background = 'linear-gradient(90deg, #5f7ef2, #a78bfa)';
     }
 
-    function updateHistoryTable(history) {
+    // แสดงตารางตาม page ปัจจุบัน
+    function renderHistoryPage() {
+        const start = (currentPage - 1) * ROWS_PER_PAGE;
+        const end = start + ROWS_PER_PAGE;
+        const pageData = fullPaymentHistory.slice(start, end);
+        
         const historyBody = document.getElementById('historyBody');
         const emptyHistory = document.getElementById('emptyHistory');
         const tableWrapper = document.getElementById('tableWrapper');
-
-        historyBody.innerHTML = '';
-
-        if (!history || history.length === 0) {
+        const paginationDiv = document.getElementById('paginationControls');
+        
+        if (!fullPaymentHistory.length) {
             emptyHistory.style.display = 'block';
             tableWrapper.style.display = 'none';
+            paginationDiv.style.display = 'none';
             return;
         }
-
+        
         emptyHistory.style.display = 'none';
         tableWrapper.style.display = 'block';
-
-        const displayList = history.slice(0, 15); // แสดง 15 รายการล่าสุด
-        displayList.forEach(item => {
+        paginationDiv.style.display = 'flex';
+        
+        historyBody.innerHTML = '';
+        pageData.forEach(item => {
             const row = document.createElement('tr');
             const paymentDate = new Date(item.date);
             const formattedDate = paymentDate.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -776,15 +658,116 @@
             `;
             historyBody.appendChild(row);
         });
+        
+        // อัปเดต pagination controls (สร้างใหม่ทุกครั้ง)
+        updatePaginationButtons();
     }
-
-    function handleFormSubmit(e) {
+    
+    function updatePaginationButtons() {
+        const paginationDiv = document.getElementById('paginationControls');
+        paginationDiv.innerHTML = '';
+        
+        const container = document.createElement('div');
+        container.className = 'pagination-container';
+        
+        const leftDiv = document.createElement('div');
+        leftDiv.className = 'page-info';
+        const startItem = (currentPage - 1) * ROWS_PER_PAGE + 1;
+        const endItem = Math.min(currentPage * ROWS_PER_PAGE, fullPaymentHistory.length);
+        leftDiv.innerHTML = `<i class="fas fa-list-ul"></i> แสดง ${startItem} - ${endItem} จาก ${fullPaymentHistory.length} รายการ`;
+        
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.className = 'pagination-buttons';
+        
+        // ปุ่ม Previous
+        const prevBtn = document.createElement('button');
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> ก่อนหน้า';
+        prevBtn.className = 'page-btn';
+        if (currentPage === 1) prevBtn.disabled = true;
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderHistoryPage();
+            }
+        });
+        buttonsDiv.appendChild(prevBtn);
+        
+        // สร้างปุ่มเลขหน้าแบบ dynamic (แสดง max 5 ปุ่ม)
+        const maxVisible = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+        if (endPage - startPage + 1 < maxVisible) startPage = Math.max(1, endPage - maxVisible + 1);
+        
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.textContent = i;
+            pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                renderHistoryPage();
+            });
+            buttonsDiv.appendChild(pageBtn);
+        }
+        
+        // ปุ่ม Next
+        const nextBtn = document.createElement('button');
+        nextBtn.innerHTML = 'ถัดไป <i class="fas fa-chevron-right"></i>';
+        nextBtn.className = 'page-btn';
+        if (currentPage === totalPages) nextBtn.disabled = true;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderHistoryPage();
+            }
+        });
+        buttonsDiv.appendChild(nextBtn);
+        
+        container.appendChild(leftDiv);
+        container.appendChild(buttonsDiv);
+        paginationDiv.appendChild(container);
+    }
+    
+    function setupPaginationAndRefresh() {
+        totalPages = Math.ceil(fullPaymentHistory.length / ROWS_PER_PAGE);
+        if (totalPages === 0) totalPages = 1;
+        // ปรับ currentPage ไม่ให้เกิน
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        renderHistoryPage();
+    }
+    
+    function setupPaginationAndRender(historyArray) {
+        fullPaymentHistory = historyArray || [];
+        // เรียงลำดับล่าสุดก่อนอีกครั้ง (ย้ำ)
+        fullPaymentHistory.sort((a, b) => (b.installment || 0) - (a.installment || 0));
+        totalPages = Math.ceil(fullPaymentHistory.length / ROWS_PER_PAGE);
+        if (totalPages === 0) totalPages = 1;
+        currentPage = 1;
+        renderHistoryPage();
+    }
+    
+    // อัปเดต history ภายหลังการบันทึกสำเร็จ
+    function refreshHistory(newHistory) {
+        if (newHistory && Array.isArray(newHistory)) {
+            fullPaymentHistory = [...newHistory];
+            fullPaymentHistory.sort((a, b) => (b.installment || 0) - (a.installment || 0));
+        } else {
+            // ถ้าไม่มีข้อมูลใหม่ ให้ดึงอีกครั้ง? แต่ data.summary อาจมี paymentHistory มาให้
+        }
+        totalPages = Math.ceil(fullPaymentHistory.length / ROWS_PER_PAGE);
+        if (totalPages === 0) totalPages = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        renderHistoryPage();
+    }
+    
+    async function handleFormSubmit(e) {
         e.preventDefault();
         const date = document.getElementById('date').value;
         let amount = parseFloat(document.getElementById('amount').value);
-
+        
         if (!date) {
-            Swal.fire({ icon: 'warning', title: 'กรุณาเลือกวันที่', text: 'ต้องระบุวันที่ชำระเงิน', background: '#13172a', color: '#fff', confirmButtonColor: '#5f7ef2' });
+            Swal.fire({ icon: 'warning', title: 'กรุณาเลือกวันที่', background: '#13172a', color: '#fff', confirmButtonColor: '#5f7ef2' });
             return;
         }
         if (isNaN(amount) || amount <= 0) {
@@ -795,16 +778,10 @@
             Swal.fire({ icon: 'error', title: 'เกินยอดรวมรถ', text: `ยอดที่จ่ายต้องไม่เกิน ${TOTAL_PRICE.toLocaleString()} บาท`, background: '#13172a', color: '#fff', confirmButtonColor: '#5f7ef2' });
             return;
         }
-
-        Swal.fire({
+        
+        const confirmResult = await Swal.fire({
             title: 'ยืนยันการบันทึก',
-            html: `
-                <div style="text-align:left;">
-                    <p><i class="fas fa-calendar-day"></i> <strong>วันที่:</strong> ${date}</p>
-                    <p><i class="fas fa-money-bill-wave"></i> <strong>ยอดเงิน:</strong> ${amount.toLocaleString('th-TH')} บาท</p>
-                    <p style="margin-top:12px;">คุณต้องการบันทึกการจ่ายงวดนี้ใช่หรือไม่?</p>
-                </div>
-            `,
+            html: `<div style="text-align:left;"><p><i class="fas fa-calendar-day"></i> <strong>วันที่:</strong> ${date}</p><p><i class="fas fa-money-bill-wave"></i> <strong>ยอดเงิน:</strong> ${amount.toLocaleString('th-TH')} บาท</p><p style="margin-top:12px;">คุณต้องการบันทึกการจ่ายงวดนี้ใช่หรือไม่?</p></div>`,
             icon: 'question',
             background: '#13172a',
             color: '#f0f3fa',
@@ -813,77 +790,66 @@
             confirmButtonText: 'ยืนยัน บันทึก',
             cancelButtonText: 'ยกเลิก',
             showCancelButton: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                submitPaymentData(date, amount);
-            }
         });
+        if (confirmResult.isConfirmed) {
+            await submitPaymentData(date, amount);
+        }
     }
-
-    function submitPaymentData(date, amount) {
+    
+    async function submitPaymentData(date, amount) {
         showLoading('กำลังบันทึกข้อมูล...');
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
-
+        
         const formData = new FormData();
         formData.append('date', date);
         formData.append('amount', amount);
-
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
+        
+        try {
+            const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
             if (!response.ok) throw new Error('Server error');
-            return response.json();
-        })
-        .then(data => {
+            const data = await response.json();
             hideLoading();
             submitBtn.disabled = false;
+            
             if (data.success) {
                 const newTotalPaid = parseFloat(data.summary.totalPaid);
-                const newPercent = data.summary.totalPaidPercent;
                 const remainingBal = TOTAL_PRICE - newTotalPaid;
-                Swal.fire({
+                await Swal.fire({
                     icon: 'success',
                     title: 'บันทึกสำเร็จ!',
-                    html: `
-                        <div style="text-align:left; margin-top: 12px;">
-                            <p><i class="fas fa-receipt"></i> <strong>งวดที่จ่าย:</strong> ${data.summary.paidInstallments}</p>
-                            <p><i class="fas fa-coins"></i> <strong>ยอดเงินงวดนี้:</strong> ${parseFloat(data.summary.lastPayment).toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p>
-                            <p><i class="fas fa-chart-line"></i> <strong>ยอดจ่ายสะสม:</strong> ${newTotalPaid.toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p>
-                            <p><i class="fas fa-hourglass-half"></i> <strong>คงเหลือต้องจ่าย:</strong> ${remainingBal.toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p>
-                            <p><i class="fas fa-percent"></i> <strong>ความคืบหน้า:</strong> ${newPercent}%</p>
-                            <p><i class="fas fa-calendar-week"></i> <strong>งวดที่เหลือ:</strong> ${data.summary.remainingInstallments} งวด</p>
-                        </div>
-                    `,
+                    html: `<div style="text-align:left;"><p><i class="fas fa-receipt"></i> <strong>งวดที่จ่าย:</strong> ${data.summary.paidInstallments}</p><p><i class="fas fa-coins"></i> <strong>ยอดเงินงวดนี้:</strong> ${parseFloat(data.summary.lastPayment).toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p><p><i class="fas fa-chart-line"></i> <strong>ยอดจ่ายสะสม:</strong> ${newTotalPaid.toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p><p><i class="fas fa-hourglass-half"></i> <strong>คงเหลือต้องจ่าย:</strong> ${remainingBal.toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท</p><p><i class="fas fa-percent"></i> <strong>ความคืบหน้า:</strong> ${data.summary.totalPaidPercent}%</p><p><i class="fas fa-calendar-week"></i> <strong>งวดที่เหลือ:</strong> ${data.summary.remainingInstallments} งวด</p></div>`,
                     background: '#13172a',
                     color: '#f0f3fa',
                     confirmButtonColor: '#5f7ef2',
                 });
+                // อัปเดต Dashboard
                 updateSummaryUI(data.summary);
-                if (data.paymentHistory) updateHistoryTable(data.paymentHistory);
-
-                // reset form date แต่คงวันที่ปัจจุบัน
+                // อัปเดตประวัติการชำระใหม่ทั้งหมด (API คืน paymentHistory มาให้)
+                if (data.paymentHistory && Array.isArray(data.paymentHistory)) {
+                    const newHistory = data.paymentHistory;
+                    newHistory.sort((a, b) => (b.installment || 0) - (a.installment || 0));
+                    fullPaymentHistory = newHistory;
+                    totalPages = Math.ceil(fullPaymentHistory.length / ROWS_PER_PAGE);
+                    if (totalPages === 0) totalPages = 1;
+                    currentPage = 1;  // กลับไปหน้าแรกหลังจากบันทึก
+                    renderHistoryPage();
+                } else {
+                    // fallback: โหลดใหม่ทั้งหมด
+                    await loadSummaryData();
+                }
+                // reset form
                 document.getElementById('paymentForm').reset();
                 document.getElementById('date').value = new Date().toISOString().split('T')[0];
             } else {
                 throw new Error(data.message || 'เกิดข้อผิดพลาด');
             }
-        })
-        .catch(error => {
+        } catch (error) {
             hideLoading();
             submitBtn.disabled = false;
-            console.error('Submit error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'บันทึกไม่สำเร็จ',
-                text: error.message || 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ กรุณาลองอีกครั้ง',
-                background: '#13172a',
-                color: '#f0f3fa',
-                confirmButtonColor: '#f97316'
-            });
-        });
+            console.error(error);
+            Swal.fire({ icon: 'error', title: 'บันทึกไม่สำเร็จ', text: error.message || 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์', background: '#13172a', color: '#f0f3fa', confirmButtonColor: '#f97316' });
+        }
     }
 </script>
 </body>
